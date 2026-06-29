@@ -1,0 +1,65 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net (Default Deny Catch-All)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper Primitives
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Collection Rules
+
+    // 1. User Profiles
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isOwner(userId);
+      allow update: if isSignedIn() && isOwner(userId);
+      allow delete: if false;
+    }
+
+    // 2. Civic Issues
+    match /issues/{issueId} {
+      allow read: if true; // Public access for exploring maps, feeds, and details
+      allow create: if isSignedIn(); // Logged in citizens can report issues
+      allow update: if isSignedIn(); // Logged in citizens/authorities can upvote, change status, etc.
+      allow delete: if false; // Incidents cannot be deleted (Civic Memory Invariant)
+    }
+
+    // 3. Resolutions ProofChain
+    match /resolutions/{issueId} {
+      allow read: if true; // Public access to audit resolutions
+      allow create: if isSignedIn(); // Authorities can upload resolution proof
+      allow update: if isSignedIn();
+      allow delete: if false;
+    }
+
+    // 4. Neighborhoods Wards
+    match /neighborhoods/{neighborhoodId} {
+      allow read: if true; // Public access to check Ward FixScores
+      allow create: if isSignedIn(); // Initial seeds or updates
+      allow update: if isSignedIn(); // Score updates on fix verification
+      allow delete: if false;
+    }
+
+    // 5. Issue History timeline ledger
+    match /history/{logId} {
+      allow read: if true; // Public access to historical transparency ledger
+      allow create: if isSignedIn(); // Logged citizen, system, or authority can append events
+      allow update: if isSignedIn();
+      allow delete: if false;
+    }
+  }
+}

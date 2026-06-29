@@ -1,0 +1,6 @@
+{
+  "name": "CiviSync",
+  "description": "CiviSync is a civic accountability platform that enables Indian citizens to report, track, and resolve hyperlocal infrastructure issues, building a durable civic memory.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-brand: #10b981;      /* Vibrant Emerald Green */
+  --color-accent: #00ff87;     /* Neon Mint Aquamorphic Accent */
+  --color-success: #10b981;    /* Vibrant Emerald */
+  --color-danger: #f43f5e;     /* Terracotta Coral */
+}
+
+/* Base custom styles for Dark Emerald theme */
+body {
+  background-color: #020c08; /* Ultra-deep Emerald Obsidian Black-Green */
+  color: #e6f4ea; /* Soft Off-White Mint Gray */
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth Fade-in classes */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-premium {
+  animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Aquamorphic and Glassmorphic Custom Utilities in Deep Emerald Green */
+.glass-aqua {
+  background: rgba(3, 19, 13, 0.7);
+  backdrop-filter: blur(16px) saturate(190%);
+  border: 1px solid rgba(0, 255, 135, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5),
+              inset 0 1px 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.glass-aqua-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-aqua-hover:hover {
+  background: rgba(4, 28, 19, 0.85);
+  border-color: rgba(0, 255, 135, 0.35);
+  box-shadow: 0 12px 40px 0 rgba(0, 255, 135, 0.08),
+              0 8px 32px 0 rgba(0, 0, 0, 0.55),
+              inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.glass-blue {
+  background: rgba(4, 25, 17, 0.75);
+  backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5),
+              inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.05);
+}
+
+.glass-blue-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-blue-hover:hover {
+  background: rgba(6, 35, 24, 0.85);
+  border-color: rgba(16, 185, 129, 0.35);
+  box-shadow: 0 12px 40px 0 rgba(16, 185, 129, 0.08),
+              0 8px 32px 0 rgba(0, 0, 0, 0.6),
+              inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.glow-cyan-subtle {
+  box-shadow: 0 0 25px -5px rgba(0, 255, 135, 0.15);
+}
+
+.glow-blue-subtle {
+  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.15);
+}
+
+/* Futuristic ambient grid pattern with deep emerald lines */
+.bg-grid-cyber {
+  background-image: 
+    linear-gradient(rgba(16, 185, 129, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 185, 129, 0.02) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #010a07;
+}
+::-webkit-scrollbar-thumb {
+  background: #0f3d2b;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #10b981;
+}
+
+/* Leaflet style overrides for a deep radar-style emerald dark grid */
+.leaflet-container {
+  background: #010a07 !important;
+  font-family: var(--font-sans) !important;
+}
+
+.leaflet-tile {
+  filter: sepia(1) hue-rotate(100deg) saturate(400%) brightness(0.6) contrast(1.2);
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background: #02110c !important;
+  color: #e6f4ea !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.8) !important;
+  border-radius: 12px !important;
+}
+
+.leaflet-popup-content {
+  margin: 12px !important;
+}
+
+.leaflet-tooltip {
+  background: #02110c !important;
+  color: #e6f4ea !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6) !important;
+  padding: 6px 10px !important;
+}
+
+.leaflet-tooltip-top:before { border-top-color: #02110c !important; }
+.leaflet-tooltip-bottom:before { border-bottom-color: #02110c !important; }
+.leaflet-tooltip-left:before { border-left-color: #02110c !important; }
+.leaflet-tooltip-right:before { border-right-color: #02110c !important; }
+
+.leaflet-bar a {
+  background-color: #02110c !important;
+  color: #e6f4ea !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.2) !important;
+}
+
+.leaflet-bar a:hover {
+  background-color: #10b981 !important;
+  color: #010a07 !important;
+}

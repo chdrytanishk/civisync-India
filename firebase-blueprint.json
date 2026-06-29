@@ -1,0 +1,243 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile in CiviSync, toggled between Guardian and Shadow mode.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Unique user ID from Firebase Auth."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User private email."
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["guardian", "shadow"],
+          "description": "User mode: guardian or shadow."
+        },
+        "username": {
+          "type": "string",
+          "description": "Public display username."
+        },
+        "points": {
+          "type": "integer",
+          "description": "Civic championship points earned."
+        },
+        "streak": {
+          "type": "integer",
+          "description": "Weekly civic participation streak."
+        },
+        "badges": {
+          "type": "array",
+          "description": "Badges and achievements."
+        },
+        "joinedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Account joining timestamp."
+        }
+      },
+      "required": ["uid", "email", "mode", "username", "points", "streak", "joinedAt"]
+    },
+    "Issue": {
+      "title": "Issue",
+      "description": "A reported civic infrastructure incident in India.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique issue ID."
+        },
+        "location": {
+          "type": "object",
+          "description": "GPS coordinate of the incident."
+        },
+        "category": {
+          "type": "string",
+          "enum": ["pothole", "broken streetlight", "water leakage", "waste", "damaged road", "other"],
+          "description": "Category of the reported issue."
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["Low", "Medium", "High", "Critical"],
+          "description": "Safety threat level classification."
+        },
+        "description": {
+          "type": "string",
+          "description": "Incident report details."
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Base64 encoded BEFORE photo of the incident."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Open", "In Progress", "Resolved"],
+          "description": "Status of municipal work."
+        },
+        "reportedBy": {
+          "type": "string",
+          "description": "UID of reporter (null if Shadow Mode)."
+        },
+        "reportedByUsername": {
+          "type": "string",
+          "description": "Public username of reporter (undefined if Shadow Mode)."
+        },
+        "upvotes": {
+          "type": "integer",
+          "description": "Upvote support counter."
+        },
+        "upvotedBy": {
+          "type": "array",
+          "description": "List of user UIDs who upvoted."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when reported."
+        },
+        "resolvedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when resolved (null if pending)."
+        },
+        "neighborhoodId": {
+          "type": "string",
+          "description": "The tracking Ward ID."
+        },
+        "isRecurring": {
+          "type": "boolean",
+          "description": "True if this spot had prior historical failures."
+        },
+        "recurrenceCount": {
+          "type": "integer",
+          "description": "Total historical recurrences detected."
+        }
+      },
+      "required": ["id", "location", "category", "severity", "description", "photoURL", "status", "upvotes", "createdAt", "neighborhoodId", "isRecurring", "recurrenceCount"]
+    },
+    "Resolution": {
+      "title": "Resolution",
+      "description": "ProofChain repair proof submitted by authorities and audited by Gemini.",
+      "type": "object",
+      "properties": {
+        "issueId": {
+          "type": "string",
+          "description": "ID of the associated issue."
+        },
+        "beforePhotoURL": {
+          "type": "string",
+          "description": "Before photo for visual auditing."
+        },
+        "afterPhotoURL": {
+          "type": "string",
+          "description": "After photo showing the repair work."
+        },
+        "geminiVerdict": {
+          "type": "string",
+          "enum": ["Genuine Fix", "Rejected"],
+          "description": "Gemini Vision audit outcome."
+        },
+        "verifiedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of audit verification."
+        },
+        "reason": {
+          "type": "string",
+          "description": "Gemini reasoning details."
+        }
+      },
+      "required": ["issueId", "beforePhotoURL", "afterPhotoURL", "geminiVerdict", "verifiedAt", "reason"]
+    },
+    "Neighborhood": {
+      "title": "Neighborhood",
+      "description": "Municipal Ward tracking boundaries and FixScores.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Ward ID."
+        },
+        "name": {
+          "type": "string",
+          "description": "Ward and locality name."
+        },
+        "fixScore": {
+          "type": "integer",
+          "description": "A score from 0-100 indicating municipal execution."
+        },
+        "boundaries": {
+          "type": "array",
+          "description": "List of boundary coordinates."
+        },
+        "scoreHistory": {
+          "type": "array",
+          "description": "FixScore history tracker."
+        }
+      },
+      "required": ["id", "name", "fixScore", "boundaries", "scoreHistory"]
+    },
+    "IssueHistoryLog": {
+      "title": "IssueHistoryLog",
+      "description": "An entry in the chronological timeline of a reported issue.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Log entry ID."
+        },
+        "issueId": {
+          "type": "string",
+          "description": "Associated issue ID."
+        },
+        "event": {
+          "type": "string",
+          "enum": ["reported", "upvoted", "assigned", "resolution_attempted", "verified", "recurred"],
+          "description": "The event category."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Event logged timestamp."
+        },
+        "actorRole": {
+          "type": "string",
+          "enum": ["authority", "citizen", "system"],
+          "description": "The role who triggered the change."
+        },
+        "details": {
+          "type": "string",
+          "description": "Text describing the logged event."
+        }
+      },
+      "required": ["id", "issueId", "event", "timestamp", "actorRole", "details"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Access to citizen profile settings, supporting both public and private details depending on mode."
+    },
+    "/issues/{issueId}": {
+      "schema": "Issue",
+      "description": "Publicly reportable, upvotable, and trackable municipal infrastructure tickets."
+    },
+    "/resolutions/{issueId}": {
+      "schema": "Resolution",
+      "description": "Verification files for repaired issues with Gemini ProofChain verdict."
+    },
+    "/neighborhoods/{neighborhoodId}": {
+      "schema": "Neighborhood",
+      "description": "Ward tracking information showing live heat-map boundaries and accountability records."
+    },
+    "/history/{logId}": {
+      "schema": "IssueHistoryLog",
+      "description": "Full transactional ledger of events for each issue."
+    }
+  }
+}
